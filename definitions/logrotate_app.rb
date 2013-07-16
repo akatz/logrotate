@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-define :logrotate_app, :enable => true, :frequency => "weekly", :template => "logrotate.erb", :cookbook => "logrotate", :postrotate => nil, :prerotate => nil, :sharedscripts => false do
+define :logrotate_app, :enable => true, :frequency => "weekly", :template => "logrotate.erb", :cookbook => "logrotate", :postrotate => nil, :prerotate => nil, :firstaction => nil, :lastaction => nil, :sharedscripts => false do
   include_recipe "logrotate"
 
   acceptable_options = ['missingok', 'compress', 'delaycompress', 'dateext', 'copytruncate', 'notifempty', 'delaycompress', 'ifempty', 'mailfirst', 'nocompress', 'nocopy', 'nocopytruncate', 'nocreate', 'nodelaycompress', 'nomail', 'nomissingok', 'noolddir', 'nosharedscripts', 'notifempty', 'sharedscripts']
@@ -44,10 +44,14 @@ define :logrotate_app, :enable => true, :frequency => "weekly", :template => "lo
         :create => params[:create],
         :frequency => params[:frequency],
         :size => params[:size],
+        :minsize => params[:minsize],
         :rotate => params[:rotate],
+        :olddir => params[:olddir],
         :sharedscripts => params[:sharedscripts],
         :postrotate => params[:postrotate],
         :prerotate => params[:prerotate],
+        :firstaction => params[:firstaction],
+        :lastaction => params[:lastaction],
         :options => options
       )
     end
@@ -55,10 +59,9 @@ define :logrotate_app, :enable => true, :frequency => "weekly", :template => "lo
   else
 
     execute "rm /etc/logrotate.d/#{params[:name]}" do
-      only_if FileTest.exists?("/etc/logrotate.d/#{params[:name]}")
+      only_if{ FileTest.exists?("/etc/logrotate.d/#{params[:name]}") }
       command "rm /etc/logrotate.d/#{params[:name]}"
     end
 
   end
 end
-

@@ -5,9 +5,15 @@
 <%- if @size %>
   size <%= @size %>
 <%- end %>
+<%- if @minsize %>
+  minsize <%= @minsize %>
+<%- end %>
   rotate <%= @rotate %>
 <%- if @create %>
   create <%= @create %>
+<%- end %>
+<%- if @olddir %>
+  olddir <%= @olddir %>
 <%- end %>
 <% @options.each do |o| -%>
   <%= o %>
@@ -23,6 +29,16 @@
 <%- if @prerotate %>
   prerotate
 <%= @prerotate %>
+  endscript
+<%- end %>
+<%- if @firstaction %>
+  firstaction
+<%= @firstaction %>
+  endscript
+<%- end %>
+<%- if @lastaction %>
+  lastaction
+<%= @lastaction %>
   endscript
 <%- end %>
 }
